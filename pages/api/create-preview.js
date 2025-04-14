@@ -32,7 +32,15 @@ export default async function handler(req, res) {
 
   try {
     await db.collection("previews").doc(id).set(record);
-    return res.status(200).json({ id, previewUrl: `https://tax-tally.com/preview/${id}` });
+    console.log("Preview Url:", `https://tax-tally.com/preview/${id}`)
+    return res.status(200).json({
+      data: {
+        response: {
+          id,
+          previewUrl: `https://tax-tally.com/preview/${id}`,
+        }
+      }
+    });
   } catch (error) {
     console.error("Error saving preview:", error);
     res.status(500).json({ error: 'Error saving preview' });
