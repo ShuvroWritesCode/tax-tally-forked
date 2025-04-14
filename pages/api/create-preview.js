@@ -26,9 +26,19 @@ export default async function handler(req, res) {
 
   try {
     await db.collection("previews").doc(id).set(record);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Content-Type', 'application/json');
     console.log("Preview url:", `https://tax-tally.com/preview/${id}`);
-    return res.status(200).json({ id, previewUrl: `https://tax-tally.com/preview/${id}` });
+    return res.status(200).send({
+      response: {
+        status: 200,
+        message: "success",
+        id,
+        previewUrl: `https://tax-tally.com/preview/${id}`
+      }
+    });
   } catch (error) {
     console.error("Error saving preview:", error);
     res.status(500).json({ error: 'Error saving preview' });
